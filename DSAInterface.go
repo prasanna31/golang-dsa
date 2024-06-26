@@ -50,6 +50,13 @@ type golangDSA interface {
 	IncidenceList()
 
 	// Map Operations
+	InitializeMap() // Initialize a map
+	SetKey(any)     // Set the key of the map
+	SetValue(any)   // Set the value of the map
+	GetKey() any    // Get the key of the map
+	GetValue() any  // Get the value of the map
+	GetMap() map[any]any
+
 	// Set Operations
 
 	// array/linkedlist/stack
