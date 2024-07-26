@@ -1,48 +1,54 @@
 package Stack
 
+import "errors"
+
 // Stack represents a stack data structure
-type Stack struct {
-	elements []any
+type Stack[T any] struct {
+	elements []T
 }
 
 // InitStack initializes the stack
-func InitStack() *Stack {
-	return &Stack{}
+func InitStack[T any]() *Stack[T] {
+	return &Stack[T]{}
 }
 
 // Push adds an element to the top of the stack
-func (s *Stack) Push(value any) {
+func (s *Stack[T]) Push(value T) {
 	s.elements = append(s.elements, value)
 }
 
 // Pop removes and returns the top element from the stack
-func (s *Stack) Pop() any {
+// Throws error if stack is empty
+func (s *Stack[T]) Pop() (T, error) {
 	if s.IsEmpty() {
-		return nil
+		var emptyValue T
+		return emptyValue, errors.New("Stack is Empty. No elements to POP")
 	}
 
 	top := s.elements[len(s.elements)-1]
 	s.elements = s.elements[:len(s.elements)-1]
 
-	return top
+	return top, nil
 }
 
 // Peek returns the top element of the stack without removing it
-func (s *Stack) Peek() any {
+// Throws error if the stack is empty
+func (s *Stack[T]) Peek() (T, error) {
 	if s.IsEmpty() {
-		return nil
+		var emptyValue T
+		return emptyValue, errors.New("Stack is Empty")
 	}
 
-	return s.elements[len(s.elements)-1]
+	return s.elements[len(s.elements)-1], nil
 }
 
 // IsEmpty checks if the stack is empty
-func (s *Stack) IsEmpty() bool {
+func (s *Stack[T]) IsEmpty() bool {
 	return len(s.elements) == 0
 }
 
 // Display displays the stack
-func (s *Stack) Display() {
+func (s *Stack[T]) Display() {
 	for i := len(s.elements) - 1; i >= 0; i-- {
 		print(s.elements[i], " ")
 	}
@@ -50,11 +56,11 @@ func (s *Stack) Display() {
 }
 
 // Length returns the number of elements in the stack
-func (s *Stack) Length() int {
+func (s *Stack[T]) Length() int {
 	return len(s.elements)
 }
 
 // Clear removes all elements from the stack
-func (s *Stack) Clear() {
-	s.elements = []any{}
+func (s *Stack[T]) Clear() {
+	s.elements = s.elements[:0]
 }
